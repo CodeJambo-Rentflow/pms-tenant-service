@@ -1,0 +1,44 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: pms-tenant-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5544/pms_tenant
+    username: pms
+    password: pms_dev_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: tenant
+        format_sql: true
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    schemas: tenant
+    default-schema: tenant
+    locations: classpath:db/migration
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8088/realms/pms-kenya
+          jwk-set-uri: http://localhost:8088/realms/pms-kenya/protocol/openid-connect/certs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    ke.co.codejambo.rentflow: DEBUG
